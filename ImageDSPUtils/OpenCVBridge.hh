@@ -17,6 +17,7 @@
 @property (nonatomic) NSInteger processType;
 
 
+
 // set the image for processing later
 -(void) setImage:(CIImage*)ciFrameImage
       withBounds:(CGRect)rect
@@ -35,5 +36,7 @@
 -(void)setTransforms:(CGAffineTransform)trans;
 
 -(void)loadHaarCascadeWithFilename:(NSString*)filename;
+
+-(bool)processFinger;
 
 @end

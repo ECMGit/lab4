@@ -22,6 +22,9 @@ class ViewController: UIViewController   {
     @IBOutlet weak var flashSlider: UISlider!
     @IBOutlet weak var stageLabel: UILabel!
     
+    @IBOutlet weak var toggleFlash: UIButton!
+    @IBOutlet weak var toggleCamera: UIButton!
+    
     //MARK: ViewController Hierarchy
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,7 +35,7 @@ class ViewController: UIViewController   {
         self.bridge.loadHaarCascade(withFilename: "nose")
         
         self.videoManager = VideoAnalgesic(mainView: self.view)
-        self.videoManager.setCameraPosition(position: AVCaptureDevice.Position.front)
+        self.videoManager.setCameraPosition(position: AVCaptureDevice.Position.back)
         
         // create dictionary for face detection
         // HINT: you need to manipulate these proerties for better face detection efficiency
@@ -55,10 +58,8 @@ class ViewController: UIViewController   {
     func processImage(inputImage:CIImage) -> CIImage{
         
         // detect faces
-        let f = getFaces(img: inputImage)
         
         // if no faces, just return original image
-        if f.count == 0 { return inputImage }
         
         var retImage = inputImage
         
@@ -80,10 +81,22 @@ class ViewController: UIViewController   {
         // or any bounds to only process a certain bounding region in OpenCV
         self.bridge.setTransforms(self.videoManager.transform)
         self.bridge.setImage(retImage,
-                             withBounds: f[0].bounds, // the first face bounds
+                             withBounds: retImage.extent, // the first face bounds
                              andContext: self.videoManager.getCIContext())
         
-        self.bridge.processImage()
+        let finger = self.bridge.processFinger()
+        DispatchQueue.main.async {
+        if finger{
+            self.toggleFlash.isHidden = true
+            self.toggleCamera.isHidden = true
+            self.videoManager.turnOnFlashwithLevel(1.0)
+        }
+        else{
+            self.toggleFlash.isHidden = false
+            self.toggleCamera.isHidden = false
+            self.videoManager.turnOffFlash()
+        }
+        }
         retImage = self.bridge.getImageComposite() // get back opencv processed part of the image (overlayed on original)
         
         return retImage

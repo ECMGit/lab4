@@ -18,15 +18,95 @@ using namespace cv;
 @property (nonatomic) CGAffineTransform transform;
 @property (nonatomic) CGAffineTransform inverseTransform;
 @property (atomic) cv::CascadeClassifier classifier;
+
+
 @end
 
 @implementation OpenCVBridge
+NSMutableArray* R = [[NSMutableArray alloc] init];
+NSMutableArray* G = [[NSMutableArray alloc] init];
+NSMutableArray* B = [[NSMutableArray alloc] init];
 
 
 
 #pragma mark ===Write Your Code Here===
 // alternatively you can subclass this class and override the process image function
+-(bool)processFinger{
+    const int kCannyLowThreshold = 300;
+    const int kFilterKernelSize = 5;
+    cv::Mat frame_gray,image_copy;
+    //============================================
+    // contour detector with full bounds drawing
+    // Convert captured frame to grayscale
+    vector<vector<cv::Point> > contours; // for saving the contours
+    vector<cv::Vec4i> hierarchy;
+    
+    cvtColor(_image, frame_gray, CV_BGRA2GRAY);
+    
+    
+    // Perform Canny edge detection
+    Canny(frame_gray, image_copy,
+          kCannyLowThreshold,
+          kCannyLowThreshold*7,
+          kFilterKernelSize);
+    
+    // convert edges into connected components
+    findContours( image_copy, contours, hierarchy,
+                 CV_RETR_CCOMP,
+                 CV_CHAIN_APPROX_SIMPLE,
+                 cv::Point(0, 0) );
+    
+//    // draw the contours to the original image
+//    for( int i = 0; i< contours.size(); i++ )
+//    {
+//        Scalar color = Scalar( rand()%255, rand()%255, rand()%255, 255 );
+//        drawContours( _image, contours, i, color, 1, 4, hierarchy, 0, cv::Point() );
+//
+//    }
+    
+    
+    
+    char text[50];
+    
+    Scalar avgPixelIntensity;
+    
+    
+    double start =0;
+    double end =0;
+    cvtColor(_image, image_copy, CV_BGRA2BGR); // get rid of alpha for processing
+    avgPixelIntensity = cv::mean( image_copy );
+    sprintf(text,"Avg. R: %.0f, G: %.0f, B: %.0f", avgPixelIntensity.val[0],avgPixelIntensity.val[1],avgPixelIntensity.val[2]);
+    cv::putText(_image, text, cv::Point(0, 10), FONT_HERSHEY_PLAIN, 0.75, Scalar::all(255), 1, 2);
+    if (contours.size() < 1) {
+        if([R count] < 101){
+            // FOR #5 ON PART 3:
+            // End time: 624312317.783336
+            // Start time: 624312314.450343
+            // So roughly 3330 ms is captured in the 100 element array.
+            printf("%f",CFAbsoluteTimeGetCurrent());
+            [R addObject:@(avgPixelIntensity.val[0])];
+            [G addObject:@(avgPixelIntensity.val[1])];
+            [B addObject:@(avgPixelIntensity.val[2])];
+        }
+        else{
+            
+ 
+            sprintf(text,"100 Frames have been recorded.");
+            cv::putText(_image, text, cv::Point(10, 30), FONT_HERSHEY_PLAIN, 0.75, Scalar::all(255), 1, 2);
+        }
+        
 
+//        sprintf(text," %.0lu",contours.size());
+        sprintf(text,"True");
+        cv::putText(_image, text, cv::Point(10, 20), FONT_HERSHEY_PLAIN, 0.75, Scalar::all(255), 1, 2);
+        return true;
+    }
+//    sprintf(text," %.0lu",contours.size());
+    sprintf(text,"False");
+    cv::putText(_image, text, cv::Point(10, 20), FONT_HERSHEY_PLAIN, 0.75, Scalar::all(255), 1, 2);
+
+    return false;
+}
 
 #pragma mark Define Custom Functions Here
 -(void)processImage{
