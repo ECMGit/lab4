@@ -40,7 +40,7 @@ class ViewController: UIViewController   {
         
         // create dictionary for face detection
         // HINT: you need to manipulate these proerties for better face detection efficiency
-        let optsDetector = [CIDetectorAccuracy:CIDetectorAccuracyLow,CIDetectorTracking:true] as [String : Any]
+        let optsDetector = [CIDetectorAccuracy:CIDetectorAccuracyLow,CIDetectorEyeBlink:true,CIDetectorSmile:true,CIDetectorTracking:true] as [String : Any]
         
         // setup a face detector in swift
         self.detector = CIDetector(ofType: CIDetectorTypeFace,
@@ -91,10 +91,10 @@ class ViewController: UIViewController   {
 //            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
 //            self.presentViewController(alert, animated: true, completion: nil)
             
-            if face.hasSmile {
-                print("face is smiling")
-            }
-            
+//            if face.hasSmile {
+//                print("face is smiling")
+//            }
+            print(face.hasSmile)
             if face.hasLeftEyePosition {
                 print("Left eye bounds are \(face.leftEyePosition)")
             }
