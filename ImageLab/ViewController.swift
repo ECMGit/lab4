@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import CoreImage
 
 class ViewController: UIViewController   {
 
@@ -57,11 +58,65 @@ class ViewController: UIViewController   {
     //MARK: Process image output
     func processImage(inputImage:CIImage) -> CIImage{
         
-        // detect faces
+        // For converting the Core Image Coordinates to UIView Coordinates
+//        let ciImageSize = inputImage.extent.size
+//        var transform = CGAffineTransform(scaleX: 1, y: -1)
+//        transform = transform.translatedBy(x: 0, y: -ciImageSize.height)
         
+        
+        // detect faces
+        let f = getFaces(img: inputImage)
+        print("total faces:", f.count)
+        // if no faces, just return original image
+        var retImage = inputImage
+        if let face = f.first as? CIFaceFeature {
+            print("found bounds are \(face.bounds)")
+            
+//            var faceViewBounds = face.bounds.applying(transform)
+//
+//            // Calculate the actual position and size of the rectangle in the image view
+//            let viewSize = self.view.bounds.size
+//            let scale = min(viewSize.width / ciImageSize.width,
+//                            viewSize.height / ciImageSize.height)
+//            let offsetX = (viewSize.width - ciImageSize.width * scale) / 2
+//            let offsetY = (viewSize.height - ciImageSize.height * scale) / 2
+//
+//            faceViewBounds = faceViewBounds.applying(CGAffineTransform(scaleX: scale, y: scale))
+//            faceViewBounds.origin.x += offsetX
+//            faceViewBounds.origin.y += offsetY
+//
+//            let faceBox = UIView(frame: faceViewBounds)
+            
+//            let alert = UIAlertController(title: "Say Cheese!", message: "We detected a face!", preferredStyle: UIAlertControllerStyle.Alert)
+//            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+//            self.presentViewController(alert, animated: true, completion: nil)
+            
+            if face.hasSmile {
+                print("face is smiling")
+            }
+            
+            if face.hasLeftEyePosition {
+                print("Left eye bounds are \(face.leftEyePosition)")
+            }
+            
+            if face.hasRightEyePosition {
+                print("Right eye bounds are \(face.rightEyePosition)")
+            }
+            if face.leftEyeClosed {
+                print("left eye closed")
+            }
+            
+            if face.rightEyeClosed {
+                print("right eye closed")
+            }
+        }
+//        if f.count > 0{
+//            retImage = applyFiltersToFaces(inputImage: inputImage, features: f)
+//        }
+        if f.count == 0 { return inputImage }
         // if no faces, just return original image
         
-        var retImage = inputImage
+        
         
         // if you just want to process on separate queue use this code
         // this is a NON BLOCKING CALL, but any changes to the image in OpenCV cannot be displayed real time
@@ -97,6 +152,7 @@ class ViewController: UIViewController   {
             self.videoManager.turnOffFlash()
         }
         }
+//        self.bridge.processImage()
         retImage = self.bridge.getImageComposite() // get back opencv processed part of the image (overlayed on original)
         
         return retImage
