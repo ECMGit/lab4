@@ -23,6 +23,9 @@ class ViewController: UIViewController   {
     @IBOutlet weak var flashSlider: UISlider!
     @IBOutlet weak var stageLabel: UILabel!
     
+    @IBOutlet weak var totalFacesLabel: UILabel!
+    @IBOutlet weak var blinkDetectorLabel: UILabel!
+    @IBOutlet weak var smileDetctorLabel: UILabel!
     @IBOutlet weak var toggleFlash: UIButton!
     @IBOutlet weak var toggleCamera: UIButton!
     
@@ -65,56 +68,44 @@ class ViewController: UIViewController   {
         
         
         // detect faces
+        var smile = false
+        var blink = 0
+        
         let f = getFaces(img: inputImage)
-        print("total faces:", f.count)
+        var numFace = f.count
+//        print("total faces:", f.count)
         // if no faces, just return original image
         var retImage = inputImage
-        if let face = f.first as? CIFaceFeature {
-            print("found bounds are \(face.bounds)")
-            
-//            var faceViewBounds = face.bounds.applying(transform)
-//
-//            // Calculate the actual position and size of the rectangle in the image view
-//            let viewSize = self.view.bounds.size
-//            let scale = min(viewSize.width / ciImageSize.width,
-//                            viewSize.height / ciImageSize.height)
-//            let offsetX = (viewSize.width - ciImageSize.width * scale) / 2
-//            let offsetY = (viewSize.height - ciImageSize.height * scale) / 2
-//
-//            faceViewBounds = faceViewBounds.applying(CGAffineTransform(scaleX: scale, y: scale))
-//            faceViewBounds.origin.x += offsetX
-//            faceViewBounds.origin.y += offsetY
-//
-//            let faceBox = UIView(frame: faceViewBounds)
-            
-//            let alert = UIAlertController(title: "Say Cheese!", message: "We detected a face!", preferredStyle: UIAlertControllerStyle.Alert)
-//            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-//            self.presentViewController(alert, animated: true, completion: nil)
-            
-            if face.hasSmile {
-                print("face is smiling")
+        var faceBounds = retImage.extent
+        // if faces == 1 detect smile and blink
+        if f.count == 1 {
+            if let face = f.first as? CIFaceFeature {
+//                print("found bounds are \(face.bounds)")
+                faceBounds = face.bounds
+                if face.hasSmile {
+//                    print("=========BIG SMILE=========")
+                    smile = true
+                }
+                
+                if face.leftEyeClosed && face.rightEyeClosed {
+                    blink = 3
+                }
+                if face.rightEyeClosed && !face.leftEyeClosed {
+                    blink = 1
+                }
+                if face.leftEyeClosed && !face.rightEyeClosed{
+                    blink = 2
+                }
             }
+        }else if f.count > 1{
             
-            if face.hasLeftEyePosition {
-                print("Left eye bounds are \(face.leftEyePosition)")
-            }
-            
-            if face.hasRightEyePosition {
-                print("Right eye bounds are \(face.rightEyePosition)")
-            }
-            if face.leftEyeClosed {
-                print("left eye closed")
-            }
-            
-            if face.rightEyeClosed {
-                print("right eye closed")
-            }
+        }else{
+            return inputImage
         }
+
 //        if f.count > 0{
 //            retImage = applyFiltersToFaces(inputImage: inputImage, features: f)
 //        }
-        if f.count == 0 { return inputImage }
-        // if no faces, just return original image
         
         
         
@@ -136,21 +127,40 @@ class ViewController: UIViewController   {
         // or any bounds to only process a certain bounding region in OpenCV
         self.bridge.setTransforms(self.videoManager.transform)
         self.bridge.setImage(retImage,
-                             withBounds: retImage.extent, // the first face bounds
+                             withBounds: faceBounds, // the first face bounds
                              andContext: self.videoManager.getCIContext())
         
         let finger = self.bridge.processFinger()
         DispatchQueue.main.async {
-        if finger{
-            self.toggleFlash.isHidden = true
-            self.toggleCamera.isHidden = true
-            self.videoManager.turnOnFlashwithLevel(1.0)
-        }
-        else{
-            self.toggleFlash.isHidden = false
-            self.toggleCamera.isHidden = false
-            self.videoManager.turnOffFlash()
-        }
+            self.totalFacesLabel.text = "Total faces: " + String(numFace)
+            if finger {
+                self.toggleFlash.isHidden = true
+                self.toggleCamera.isHidden = true
+                self.videoManager.turnOnFlashwithLevel(1.0)
+            }else{
+                self.toggleFlash.isHidden = false
+                self.toggleCamera.isHidden = false
+                self.videoManager.turnOffFlash()
+            }
+            if smile {
+                self.smileDetctorLabel.text = "Yes, Sweet!"
+            }else{
+                self.smileDetctorLabel.text = "Say Cheese"
+            }
+            switch blink {
+            case 1:
+                self.blinkDetectorLabel.text = "blink eye: right"
+                break
+            case 2:
+                self.blinkDetectorLabel.text = "blink eye: left"
+                break
+            case 3:
+                self.blinkDetectorLabel.text = "both closed"
+                break
+            default:
+                self.blinkDetectorLabel.text = "try to blink"
+            }
+        
         }
 //        self.bridge.processImage()
         retImage = self.bridge.getImageComposite() // get back opencv processed part of the image (overlayed on original)
@@ -192,7 +202,11 @@ class ViewController: UIViewController   {
     
     func getFaces(img:CIImage) -> [CIFaceFeature]{
         // this ungodly mess makes sure the image is the correct orientation
-        let optsFace = [CIDetectorImageOrientation:self.videoManager.ciOrientation]
+        let optsFace = [
+            CIDetectorImageOrientation:self.videoManager.ciOrientation,
+            CIDetectorSmile: true,
+            CIDetectorEyeBlink: true
+        ] as [String: Any]
         // get Face Features
         return self.detector.features(in: img, options: optsFace) as! [CIFaceFeature]
         
