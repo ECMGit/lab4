@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import CoreImage
 
 class ViewController: UIViewController   {
 
@@ -22,6 +23,9 @@ class ViewController: UIViewController   {
     @IBOutlet weak var flashSlider: UISlider!
     @IBOutlet weak var stageLabel: UILabel!
     
+    @IBOutlet weak var totalFacesLabel: UILabel!
+    @IBOutlet weak var blinkDetectorLabel: UILabel!
+    @IBOutlet weak var smileDetctorLabel: UILabel!
     @IBOutlet weak var toggleFlash: UIButton!
     @IBOutlet weak var toggleCamera: UIButton!
     
@@ -57,11 +61,53 @@ class ViewController: UIViewController   {
     //MARK: Process image output
     func processImage(inputImage:CIImage) -> CIImage{
         
+        // For converting the Core Image Coordinates to UIView Coordinates
+//        let ciImageSize = inputImage.extent.size
+//        var transform = CGAffineTransform(scaleX: 1, y: -1)
+//        transform = transform.translatedBy(x: 0, y: -ciImageSize.height)
+        
+        
         // detect faces
+        var smile = false
+        var blink = 0
         
+        let f = getFaces(img: inputImage)
+        var numFace = f.count
+//        print("total faces:", f.count)
         // if no faces, just return original image
-        
         var retImage = inputImage
+        var faceBounds = retImage.extent
+        // if faces == 1 detect smile and blink
+        if f.count == 1 {
+            if let face = f.first as? CIFaceFeature {
+//                print("found bounds are \(face.bounds)")
+                faceBounds = face.bounds
+                if face.hasSmile {
+//                    print("=========BIG SMILE=========")
+                    smile = true
+                }
+                
+                if face.leftEyeClosed && face.rightEyeClosed {
+                    blink = 3
+                }
+                if face.rightEyeClosed && !face.leftEyeClosed {
+                    blink = 1
+                }
+                if face.leftEyeClosed && !face.rightEyeClosed{
+                    blink = 2
+                }
+            }
+        }else if f.count > 1{
+            
+        }else{
+            return inputImage
+        }
+
+//        if f.count > 0{
+//            retImage = applyFiltersToFaces(inputImage: inputImage, features: f)
+//        }
+        
+        
         
         // if you just want to process on separate queue use this code
         // this is a NON BLOCKING CALL, but any changes to the image in OpenCV cannot be displayed real time
@@ -81,22 +127,42 @@ class ViewController: UIViewController   {
         // or any bounds to only process a certain bounding region in OpenCV
         self.bridge.setTransforms(self.videoManager.transform)
         self.bridge.setImage(retImage,
-                             withBounds: retImage.extent, // the first face bounds
+                             withBounds: faceBounds, // the first face bounds
                              andContext: self.videoManager.getCIContext())
         
         let finger = self.bridge.processFinger()
         DispatchQueue.main.async {
-        if finger{
-            self.toggleFlash.isHidden = true
-            self.toggleCamera.isHidden = true
-            self.videoManager.turnOnFlashwithLevel(1.0)
+            self.totalFacesLabel.text = "Total faces: " + String(numFace)
+            if finger {
+                self.toggleFlash.isHidden = true
+                self.toggleCamera.isHidden = true
+                self.videoManager.turnOnFlashwithLevel(1.0)
+            }else{
+                self.toggleFlash.isHidden = false
+                self.toggleCamera.isHidden = false
+                self.videoManager.turnOffFlash()
+            }
+            if smile {
+                self.smileDetctorLabel.text = "Yes, Sweet!"
+            }else{
+                self.smileDetctorLabel.text = "Say Cheese"
+            }
+            switch blink {
+            case 1:
+                self.blinkDetectorLabel.text = "blink eye: right"
+                break
+            case 2:
+                self.blinkDetectorLabel.text = "blink eye: left"
+                break
+            case 3:
+                self.blinkDetectorLabel.text = "both closed"
+                break
+            default:
+                self.blinkDetectorLabel.text = "try to blink"
+            }
+        
         }
-        else{
-            self.toggleFlash.isHidden = false
-            self.toggleCamera.isHidden = false
-            self.videoManager.turnOffFlash()
-        }
-        }
+//        self.bridge.processImage()
         retImage = self.bridge.getImageComposite() // get back opencv processed part of the image (overlayed on original)
         
         return retImage
@@ -136,7 +202,11 @@ class ViewController: UIViewController   {
     
     func getFaces(img:CIImage) -> [CIFaceFeature]{
         // this ungodly mess makes sure the image is the correct orientation
-        let optsFace = [CIDetectorImageOrientation:self.videoManager.ciOrientation]
+        let optsFace = [
+            CIDetectorImageOrientation:self.videoManager.ciOrientation,
+            CIDetectorSmile: true,
+            CIDetectorEyeBlink: true
+        ] as [String: Any]
         // get Face Features
         return self.detector.features(in: img, options: optsFace) as! [CIFaceFeature]
         

@@ -167,7 +167,7 @@ class VideoAnalgesic: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AV
                 capture.startRunning()
             }
             
-            //self.updateOrientation()
+//            self.updateOrientation()
         }
     }
     
