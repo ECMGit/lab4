@@ -56,7 +56,7 @@
                           aboveFrequency:(float)minimumFrequency
 {
     NSMutableArray* peaks = [[NSMutableArray alloc] init];
-    int startIndex = minimumFrequency / self.frequencyResolution; // must be above X Hz
+    int startIndex = 0; // must be above X Hz
     
     for (int i = startIndex; i < length-windowSize; i++) {
         unsigned long mid = (i + windowSize/2);

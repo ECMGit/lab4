@@ -91,6 +91,8 @@ class ModuleBViewController: UIViewController {
         if finger{
             if self.bridge.checkR(){
                 self.updateGraph()
+                let hr = self.bridge.processHeartRate()
+                NSLog("%f",hr)
             }
         }
 //        if finger != nil{
@@ -175,7 +177,7 @@ class ModuleBViewController: UIViewController {
     func updateGraph(){
         if self.bridge.checkR(){
             self.graph?.updateGraph(
-                data: self.bridge.processHeartRate() as! [Float],
+                data: self.bridge.getR() as! [Float],
                 forKey: "PPG"
             )
         

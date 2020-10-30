@@ -27,8 +27,9 @@ using namespace cv;
 NSMutableArray* R = [[NSMutableArray alloc] init];
 NSMutableArray* G = [[NSMutableArray alloc] init];
 NSMutableArray* B = [[NSMutableArray alloc] init];
-PeakFinder *pf = [[PeakFinder alloc] initWithFrequencyResolution:10.0];
+PeakFinder *pf = [[PeakFinder alloc] initWithFrequencyResolution:50.0];
 //CircularBuffer* circ = [CircularBuffer initWithNumChannels:100];
+
 
 #pragma mark ===Write Your Code Here===
 // alternatively you can subclass this class and override the process image function
@@ -42,12 +43,12 @@ PeakFinder *pf = [[PeakFinder alloc] initWithFrequencyResolution:10.0];
     }
 }
 
--(NSMutableArray*)processHeartRate{
+-(float)processHeartRate{
     float* xyz = new float[100];
     for (int i = 0; i < 100; i++) {
         xyz[i] = [R[i] floatValue];
     }
-    NSArray* temp = [pf getFundamentalPeaksFromBuffer:xyz withLength:[R count] usingWindowSize:30 andPeakMagnitudeMinimum:100 aboveFrequency:0];
+    NSArray* temp = [pf getFundamentalPeaksFromBuffer:xyz withLength:[R count] usingWindowSize:5 andPeakMagnitudeMinimum:100 aboveFrequency:0];
     printf("\n");
     for(int i = 0; i < [temp count]; i++)
     {
@@ -56,8 +57,12 @@ PeakFinder *pf = [[PeakFinder alloc] initWithFrequencyResolution:10.0];
     printf("\n");
 
     
-    return R;
+    return (60*([temp count]/3.33));
     
+}
+
+-(NSMutableArray*)getR{
+    return R;
 }
 
 -(bool)processFinger{
