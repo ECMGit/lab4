@@ -100,7 +100,7 @@ class ViewController: UIViewController   {
                 retImage = applyFiltersToEM(inputImage: retImage, face: face)
             }
         }else if f.count > 1{
-            
+            retImage = applyFiltersToFaces(inputImage: inputImage, features: f)
         }else{
             return inputImage
         }
@@ -179,6 +179,13 @@ class ViewController: UIViewController   {
         filterPinch.setValue(75, forKey: "inputRadius")
         filters.append(filterPinch)
         
+        
+        let filterBlur = CIFilter(name:"CITwirlDistortion")!
+        filterBlur.setValue(75, forKey: "inputRadius")
+        filterBlur.setValue(3.14, forKey: "inputAngle")
+        filters.append(filterBlur)
+        
+        
     }
     
     //MARK: Apply filters to eyes and mouth
@@ -189,13 +196,14 @@ class ViewController: UIViewController   {
         filterCenters.append(face.rightEyePosition)
         filterCenters.append(face.mouthPosition)
         
+        print(filterCenters)
+        
         for fc in filterCenters {
-            for filt in filters{
-                filt.setValue(retImage, forKey: kCIInputImageKey)
-                filt.setValue(CIVector(cgPoint: fc), forKey: "inputCenter")
-                // could also manipualte the radius of the filter based on face size!
-                retImage = filt.outputImage!
-            }
+            filters[0].setValue(retImage, forKey: kCIInputImageKey)
+            filters[0].setValue(CIVector(cgPoint: fc), forKey: "inputCenter")
+            // could also manipualte the radius of the filter based on face size!
+            retImage = filters[0].outputImage!
+
         }
         return retImage
     }
@@ -212,12 +220,10 @@ class ViewController: UIViewController   {
             filterCenter.y = f.bounds.midY
             
             //do for each filter (assumes all filters have property, "inputCenter")
-            for filt in filters{
-                filt.setValue(retImage, forKey: kCIInputImageKey)
-                filt.setValue(CIVector(cgPoint: filterCenter), forKey: "inputCenter")
-                // could also manipualte the radius of the filter based on face size!
-                retImage = filt.outputImage!
-            }
+            filters[1].setValue(retImage, forKey: kCIInputImageKey)
+            filters[1].setValue(CIVector(cgPoint: filterCenter), forKey: "inputCenter")
+            // could also manipualte the radius of the filter based on face size!
+            retImage = filters[1].outputImage!
         }
         return retImage
     }
