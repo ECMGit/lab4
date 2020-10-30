@@ -8,7 +8,6 @@
 
 import UIKit
 import Metal
-import MetalKit
 
 class ModuleBViewController: UIViewController {
 
