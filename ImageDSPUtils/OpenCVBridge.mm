@@ -71,20 +71,9 @@ NSMutableArray* B = [[NSMutableArray alloc] init];
                  CV_CHAIN_APPROX_SIMPLE,
                  cv::Point(0, 0) );
     
-//    // draw the contours to the original image
-//    for( int i = 0; i< contours.size(); i++ )
-//    {
-//        Scalar color = Scalar( rand()%255, rand()%255, rand()%255, 255 );
-//        drawContours( _image, contours, i, color, 1, 4, hierarchy, 0, cv::Point() );
-//
-//    }
-    
-    
-    
     char text[50];
     
     Scalar avgPixelIntensity;
-    
     
     double start =0;
     double end =0;
@@ -105,14 +94,10 @@ NSMutableArray* B = [[NSMutableArray alloc] init];
             [B addObject:@(avgPixelIntensity.val[2])];
         }
         else{
-            
- 
             sprintf(text,"100 Frames have been recorded.");
             cv::putText(_image, text, cv::Point(10, 30), FONT_HERSHEY_PLAIN, 0.75, Scalar::all(255), 1, 2);
         }
-        
-
-//        sprintf(text," %.0lu",contours.size());
+        // if we captured sufficient data
         sprintf(text,"True");
         cv::putText(_image, text, cv::Point(10, 20), FONT_HERSHEY_PLAIN, 0.75, Scalar::all(255), 1, 2);
         return true;
@@ -130,8 +115,6 @@ NSMutableArray* B = [[NSMutableArray alloc] init];
     cv::Mat frame_gray,image_copy;
     const int kCannyLowThreshold = 300;
     const int kFilterKernelSize = 5;
-    
-    
     
     
     switch (self.processType) {
