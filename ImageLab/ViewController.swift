@@ -82,6 +82,7 @@ class ViewController: UIViewController   {
             if let face = f.first as? CIFaceFeature {
 //                print("found bounds are \(face.bounds)")
                 faceBounds = face.bounds
+                print("left eye: ", face.leftEyePosition, " right eye: ", face.rightEyePosition, " mouth: ", face.mouthPosition)
                 if face.hasSmile {
 //                    print("=========BIG SMILE=========")
                     smile = true
@@ -96,6 +97,7 @@ class ViewController: UIViewController   {
                 if face.leftEyeClosed && !face.rightEyeClosed{
                     blink = 2
                 }
+                retImage = applyFiltersToEM(inputImage: retImage, face: face)
             }
         }else if f.count > 1{
             
@@ -178,6 +180,26 @@ class ViewController: UIViewController   {
         filters.append(filterPinch)
         
     }
+    
+    //MARK: Apply filters to eyes and mouth
+    func applyFiltersToEM(inputImage:CIImage, face:CIFaceFeature)->CIImage{
+        var retImage = inputImage
+        var filterCenters = [CGPoint]()
+        filterCenters.append(face.leftEyePosition)
+        filterCenters.append(face.rightEyePosition)
+        filterCenters.append(face.mouthPosition)
+        
+        for fc in filterCenters {
+            for filt in filters{
+                filt.setValue(retImage, forKey: kCIInputImageKey)
+                filt.setValue(CIVector(cgPoint: fc), forKey: "inputCenter")
+                // could also manipualte the radius of the filter based on face size!
+                retImage = filt.outputImage!
+            }
+        }
+        return retImage
+    }
+    
     
     //MARK: Apply filters and apply feature detectors
     func applyFiltersToFaces(inputImage:CIImage,features:[CIFaceFeature])->CIImage{

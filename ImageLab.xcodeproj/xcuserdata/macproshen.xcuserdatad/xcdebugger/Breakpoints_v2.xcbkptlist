@@ -14,8 +14,8 @@
             filePath = "ImageLab/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "224"
-            endingLineNumber = "224"
+            startingLineNumber = "246"
+            endingLineNumber = "246"
             landmarkName = "swipeRecognized(_:)"
             landmarkType = "7">
          </BreakpointContent>
