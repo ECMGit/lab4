@@ -94,6 +94,7 @@ NSMutableArray* B = [[NSMutableArray alloc] init];
             [B addObject:@(avgPixelIntensity.val[2])];
         }
         else{
+            R = [[NSMutableArray alloc] init];
             sprintf(text,"100 Frames have been recorded.");
             cv::putText(_image, text, cv::Point(10, 30), FONT_HERSHEY_PLAIN, 0.75, Scalar::all(255), 1, 2);
         }
