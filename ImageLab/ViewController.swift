@@ -72,8 +72,8 @@ class ViewController: UIViewController   {
         var blink = 0
         
         let f = getFaces(img: inputImage)
-        var numFace = f.count
-//        print("total faces:", f.count)
+        let numFace = f.count
+        print("total faces:", f.count)
         // if no faces, just return original image
         var retImage = inputImage
         var faceBounds = retImage.extent
@@ -82,7 +82,7 @@ class ViewController: UIViewController   {
             if let face = f.first as? CIFaceFeature {
 //                print("found bounds are \(face.bounds)")
                 faceBounds = face.bounds
-                print("left eye: ", face.leftEyePosition, " right eye: ", face.rightEyePosition, " mouth: ", face.mouthPosition)
+//                print("left eye: ", face.leftEyePosition, " right eye: ", face.rightEyePosition, " mouth: ", face.mouthPosition)
                 if face.hasSmile {
 //                    print("=========BIG SMILE=========")
                     smile = true
@@ -101,8 +101,6 @@ class ViewController: UIViewController   {
             }
         }else if f.count > 1{
             retImage = applyFiltersToFaces(inputImage: inputImage, features: f)
-        }else{
-            return inputImage
         }
 
 //        if f.count > 0{
