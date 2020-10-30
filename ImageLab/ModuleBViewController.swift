@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Metal
 
 class ModuleBViewController: UIViewController {
 
@@ -18,8 +19,12 @@ class ModuleBViewController: UIViewController {
     var detector:CIDetector! = nil
     let bridge = OpenCVBridge()
     
-    @IBOutlet var subView: UIView!
 
+
+    @IBOutlet var cameraView: UIView!
+    
+    @IBOutlet var subView: UIView!
+    
     lazy var graph:MetalGraph? = {
         return MetalGraph(mainView: self.subView)
         }()
@@ -39,7 +44,7 @@ class ModuleBViewController: UIViewController {
         self.setupFilters()
         
         self.bridge.loadHaarCascade(withFilename: "nose")
-        self.videoManager = VideoAnalgesic(mainView: self.view)
+        self.videoManager = VideoAnalgesic(mainView: self.cameraView)
         self.videoManager.setCameraPosition(position: AVCaptureDevice.Position.back)
         
         // create dictionary for face detection
@@ -55,6 +60,7 @@ class ModuleBViewController: UIViewController {
         
 
         self.view.addSubview(self.subView)
+        self.view.addSubview(self.cameraView)
         
         graph?.addGraph(withName: "PPG", shouldNormalize: true, numPointsInGraph: 100)
         Timer.scheduledTimer(timeInterval: 0.05, target: self,
@@ -85,6 +91,8 @@ class ModuleBViewController: UIViewController {
         if finger{
             if self.bridge.checkR(){
                 self.updateGraph()
+                let hr = self.bridge.processHeartRate()
+                NSLog("%f",hr)
             }
         }
 //        if finger != nil{
@@ -169,7 +177,7 @@ class ModuleBViewController: UIViewController {
     func updateGraph(){
         if self.bridge.checkR(){
             self.graph?.updateGraph(
-                data: self.bridge.processHeartRate() as! [Float],
+                data: self.bridge.getR() as! [Float],
                 forKey: "PPG"
             )
         

@@ -39,7 +39,8 @@
 
 -(bool)processFinger;
 
--(NSMutableArray*)processHeartRate;
+-(float)processHeartRate;
 -(bool)checkR;
+-(NSMutableArray*)getR;
 
 @end

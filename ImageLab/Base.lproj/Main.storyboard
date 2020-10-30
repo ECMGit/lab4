@@ -88,12 +88,36 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cXq-N2-nWi">
+                                <rect key="frame" x="0.0" y="317" width="375" height="350"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="350" id="M5b-Z9-qNO"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="Z1X-Jr-DBK" firstAttribute="top" secondItem="cXq-N2-nWi" secondAttribute="bottom" id="2j6-7V-oNF"/>
+                            <constraint firstItem="cXq-N2-nWi" firstAttribute="leading" secondItem="csN-ER-5NB" secondAttribute="leading" id="5q7-dJ-xva"/>
+                            <constraint firstItem="4wQ-4A-JIp" firstAttribute="top" secondItem="Y2Z-am-ImR" secondAttribute="bottom" constant="8" symbolic="YES" id="811-21-F2F"/>
+                            <constraint firstItem="4wQ-4A-JIp" firstAttribute="leading" secondItem="csN-ER-5NB" secondAttribute="leading" id="A5q-qv-fHy"/>
+                            <constraint firstItem="4wQ-4A-JIp" firstAttribute="top" secondItem="Y2Z-am-ImR" secondAttribute="bottom" constant="8" symbolic="YES" id="AL3-RA-glh"/>
+                            <constraint firstItem="cXq-N2-nWi" firstAttribute="top" secondItem="4wQ-4A-JIp" secondAttribute="bottom" constant="8" symbolic="YES" id="AnA-dT-060"/>
+                            <constraint firstAttribute="trailing" secondItem="cXq-N2-nWi" secondAttribute="trailing" id="DtG-UA-Cm5"/>
+                            <constraint firstItem="cXq-N2-nWi" firstAttribute="top" secondItem="4wQ-4A-JIp" secondAttribute="bottom" constant="8" symbolic="YES" id="W4B-zw-ecJ"/>
+                            <constraint firstItem="Z1X-Jr-DBK" firstAttribute="top" secondItem="cXq-N2-nWi" secondAttribute="bottom" id="iUt-Jx-iuG"/>
+                            <constraint firstItem="4wQ-4A-JIp" firstAttribute="leading" secondItem="csN-ER-5NB" secondAttribute="leading" id="pxK-mj-Mx9"/>
+                            <constraint firstAttribute="trailing" secondItem="4wQ-4A-JIp" secondAttribute="trailing" id="qW6-dF-1ag"/>
+                            <constraint firstItem="4wQ-4A-JIp" firstAttribute="centerX" secondItem="cXq-N2-nWi" secondAttribute="centerX" id="uFZ-kg-2L3"/>
+                            <constraint firstAttribute="trailing" secondItem="4wQ-4A-JIp" secondAttribute="trailing" id="vZD-WW-v7g"/>
+                            <constraint firstItem="cXq-N2-nWi" firstAttribute="top" secondItem="4wQ-4A-JIp" secondAttribute="bottom" constant="8" symbolic="YES" id="xBS-pH-yb1"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="ron-u3-mM4"/>
                     <connections>
-                        <outlet property="subView" destination="E9O-3s-71c" id="dea-G9-fA0"/>
+                        <outlet property="cameraView" destination="4wQ-4A-JIp" id="cuR-K7-kpE"/>
+                        <outlet property="subView" destination="cXq-N2-nWi" id="tRZ-Yj-ik3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RYz-sc-czR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

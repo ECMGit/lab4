@@ -7,7 +7,8 @@
 //
 
 #import "OpenCVBridge.hh"
-
+#import "FindPeak.h"
+#import "CircularBuffer.h"
 
 using namespace cv;
 
@@ -26,7 +27,8 @@ using namespace cv;
 NSMutableArray* R = [[NSMutableArray alloc] init];
 NSMutableArray* G = [[NSMutableArray alloc] init];
 NSMutableArray* B = [[NSMutableArray alloc] init];
-
+PeakFinder *pf = [[PeakFinder alloc] initWithFrequencyResolution:50.0];
+//CircularBuffer* circ = [CircularBuffer initWithNumChannels:100];
 
 
 #pragma mark ===Write Your Code Here===
@@ -41,9 +43,26 @@ NSMutableArray* B = [[NSMutableArray alloc] init];
     }
 }
 
--(NSMutableArray*)processHeartRate{
-    return R;
+-(float)processHeartRate{
+    float* xyz = new float[100];
+    for (int i = 0; i < 100; i++) {
+        xyz[i] = [R[i] floatValue];
+    }
+    NSArray* temp = [pf getFundamentalPeaksFromBuffer:xyz withLength:[R count] usingWindowSize:5 andPeakMagnitudeMinimum:100 aboveFrequency:0];
+    printf("\n");
+    for(int i = 0; i < [temp count]; i++)
+    {
+        printf("%f\n",[temp[i] magnitude]);
+    }
+    printf("\n");
+
     
+    return (60*([temp count]/3.33));
+    
+}
+
+-(NSMutableArray*)getR{
+    return R;
 }
 
 -(bool)processFinger{
@@ -87,7 +106,7 @@ NSMutableArray* B = [[NSMutableArray alloc] init];
             // End time: 624312317.783336
             // Start time: 624312314.450343
             // So roughly 3330 ms is captured in the 100 element array.
-            printf("%f",CFAbsoluteTimeGetCurrent());
+            //printf("%f",CFAbsoluteTimeGetCurrent());
             NSNumber *num = [NSNumber numberWithFloat:avgPixelIntensity.val[0]];
             [R addObject:num];
             [G addObject:@(avgPixelIntensity.val[1])];

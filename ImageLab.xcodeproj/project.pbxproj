@@ -10,6 +10,8 @@
 		95341455254C65700091D776 /* ModuleBViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95341454254C65700091D776 /* ModuleBViewController.swift */; };
 		95341459254C70FE0091D776 /* MetalGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95341458254C70FE0091D776 /* MetalGraph.swift */; };
 		9534145C254C79690091D776 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 9534145B254C79690091D776 /* Shaders.metal */; };
+		957D1924254CAD0800FFC738 /* FindPeak.m in Sources */ = {isa = PBXBuildFile; fileRef = 957D1923254CAD0800FFC738 /* FindPeak.m */; };
+		957D192A254CB45200FFC738 /* CircularBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 957D1929254CB45200FFC738 /* CircularBuffer.m */; };
 		B650B31B1D8340F0000114A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B650B31A1D8340F0000114A1 /* AppDelegate.swift */; };
 		B650B31D1D8340F0000114A1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B650B31C1D8340F0000114A1 /* ViewController.swift */; };
 		B650B3201D8340F0000114A1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B650B31E1D8340F0000114A1 /* Main.storyboard */; };
@@ -26,6 +28,10 @@
 		95341454254C65700091D776 /* ModuleBViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleBViewController.swift; sourceTree = "<group>"; };
 		95341458254C70FE0091D776 /* MetalGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalGraph.swift; sourceTree = "<group>"; };
 		9534145B254C79690091D776 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
+		957D1923254CAD0800FFC738 /* FindPeak.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FindPeak.m; sourceTree = "<group>"; };
+		957D1927254CAD1A00FFC738 /* FindPeak.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FindPeak.h; sourceTree = "<group>"; };
+		957D1929254CB45200FFC738 /* CircularBuffer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CircularBuffer.m; sourceTree = "<group>"; };
+		957D192C254CB46400FFC738 /* CircularBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CircularBuffer.h; sourceTree = "<group>"; };
 		B650B3171D8340F0000114A1 /* ImageLab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageLab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B650B31A1D8340F0000114A1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B650B31C1D8340F0000114A1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -123,6 +129,10 @@
 				B67B72B91D996ADE008EDDE1 /* OpenCVBridge.hh */,
 				B67B72BA1D996ADE008EDDE1 /* OpenCVBridge.mm */,
 				B67B72B81D996ADC008EDDE1 /* ImageLab-Bridging-Header.h */,
+				957D1923254CAD0800FFC738 /* FindPeak.m */,
+				957D1927254CAD1A00FFC738 /* FindPeak.h */,
+				957D1929254CB45200FFC738 /* CircularBuffer.m */,
+				957D192C254CB46400FFC738 /* CircularBuffer.h */,
 			);
 			name = ImageDSPUtils;
 			path = ImageLab;
@@ -204,6 +214,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				957D192A254CB45200FFC738 /* CircularBuffer.m in Sources */,
 				B6E657991D95AA4500E75C60 /* VideoAnalgesic.swift in Sources */,
 				9534145C254C79690091D776 /* Shaders.metal in Sources */,
 				B650B31D1D8340F0000114A1 /* ViewController.swift in Sources */,
@@ -211,6 +222,7 @@
 				95341455254C65700091D776 /* ModuleBViewController.swift in Sources */,
 				B650B31B1D8340F0000114A1 /* AppDelegate.swift in Sources */,
 				B67B72BB1D996ADE008EDDE1 /* OpenCVBridge.mm in Sources */,
+				957D1924254CAD0800FFC738 /* FindPeak.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
