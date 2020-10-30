@@ -31,6 +31,21 @@ NSMutableArray* B = [[NSMutableArray alloc] init];
 
 #pragma mark ===Write Your Code Here===
 // alternatively you can subclass this class and override the process image function
+
+-(bool)checkR{
+    if([R count] == 100){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+-(NSMutableArray*)processHeartRate{
+    return R;
+    
+}
+
 -(bool)processFinger{
     const int kCannyLowThreshold = 300;
     const int kFilterKernelSize = 5;
@@ -65,7 +80,7 @@ NSMutableArray* B = [[NSMutableArray alloc] init];
     cvtColor(_image, image_copy, CV_BGRA2BGR); // get rid of alpha for processing
     avgPixelIntensity = cv::mean( image_copy );
     sprintf(text,"Avg. R: %.0f, G: %.0f, B: %.0f", avgPixelIntensity.val[0],avgPixelIntensity.val[1],avgPixelIntensity.val[2]);
-    cv::putText(_image, text, cv::Point(0, 10), FONT_HERSHEY_PLAIN, 0.75, Scalar::all(255), 1, 2);
+    cv::putText(_image, text, cv::Point(0, 50), FONT_HERSHEY_PLAIN, 0.75, Scalar::all(255), 1, 2);
     if (contours.size() < 1) {
         if([R count] < 101){
             // FOR #5 ON PART 3:
@@ -73,7 +88,8 @@ NSMutableArray* B = [[NSMutableArray alloc] init];
             // Start time: 624312314.450343
             // So roughly 3330 ms is captured in the 100 element array.
             printf("%f",CFAbsoluteTimeGetCurrent());
-            [R addObject:@(avgPixelIntensity.val[0])];
+            NSNumber *num = [NSNumber numberWithFloat:avgPixelIntensity.val[0]];
+            [R addObject:num];
             [G addObject:@(avgPixelIntensity.val[1])];
             [B addObject:@(avgPixelIntensity.val[2])];
         }
