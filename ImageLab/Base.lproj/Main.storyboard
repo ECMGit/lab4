@@ -84,13 +84,28 @@
                     <view key="view" contentMode="scaleToFill" id="csN-ER-5NB">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M3Z-tz-4GO">
+                                <rect key="frame" x="0.0" y="376" width="375" height="128"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="M3Z-tz-4GO" secondAttribute="trailing" id="Rfp-OJ-soY"/>
+                            <constraint firstItem="M3Z-tz-4GO" firstAttribute="top" secondItem="Y2Z-am-ImR" secondAttribute="bottom" constant="332" id="UW8-36-fID"/>
+                            <constraint firstItem="M3Z-tz-4GO" firstAttribute="leading" secondItem="csN-ER-5NB" secondAttribute="leading" id="Yf7-ty-1f8"/>
+                            <constraint firstItem="Z1X-Jr-DBK" firstAttribute="top" secondItem="M3Z-tz-4GO" secondAttribute="bottom" constant="163" id="pbW-1d-MYu"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="ron-u3-mM4"/>
+                    <connections>
+                        <outlet property="subView" destination="M3Z-tz-4GO" id="TpT-Bx-EI7"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RYz-sc-czR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="675" y="774"/>
+            <point key="canvasLocation" x="674.39999999999998" y="773.16341829085468"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Pt7-2c-3nm">

@@ -17,8 +17,9 @@ class ModuleBViewController: UIViewController {
     let pinchFilterIndex = 2
     var detector:CIDetector! = nil
     let bridge = OpenCVBridge()
+    @IBOutlet var subView: UIView!
     lazy var graph:MetalGraph? = {
-            return MetalGraph(mainView: self.view)
+            return MetalGraph(mainView: self.subView)
         }()
     
     //MARK: Outlets in view
@@ -36,30 +37,25 @@ class ModuleBViewController: UIViewController {
         self.setupFilters()
         
         self.bridge.loadHaarCascade(withFilename: "nose")
-        
         self.videoManager = VideoAnalgesic(mainView: self.view)
         self.videoManager.setCameraPosition(position: AVCaptureDevice.Position.back)
         
         // create dictionary for face detection
         // HINT: you need to manipulate these proerties for better face detection efficiency
-        let optsDetector = [CIDetectorAccuracy:CIDetectorAccuracyLow,CIDetectorTracking:true] as [String : Any]
+     
         
-        // setup a face detector in swift
-        self.detector = CIDetector(ofType: CIDetectorTypeFace,
-                                  context: self.videoManager.getCIContext(), // perform on the GPU is possible
-            options: (optsDetector as [String : AnyObject]))
-        
+
         self.videoManager.setProcessingBlock(newProcessBlock: self.processImage)
         
         if !videoManager.isRunning{
             videoManager.start()
         }
         
-        graph?.addGraph(withName: "PPG", shouldNormalize: false, numPointsInGraph: 100)
-//        Timer.scheduledTimer(timeInterval: 0.05, target: self,
-//            selector: #selector(self.updateGraph),
-//            userInfo: nil,
-//            repeats: true)
+        graph?.addGraph(withName: "PPG", shouldNormalize: true, numPointsInGraph: 100)
+        Timer.scheduledTimer(timeInterval: 0.05, target: self,
+            selector: #selector(self.updateGraph),
+            userInfo: nil,
+            repeats: true)
        
     
     }
@@ -204,12 +200,13 @@ class ModuleBViewController: UIViewController {
     // periodically, update the graph with refreshed FFT Data
     @objc
     func updateGraph(){
-        self.graph?.updateGraph(
-            data: self.bridge.processHeartRate() as! [Float],
-            forKey: "PPG"
-        )
+        if self.bridge.checkR(){
+            self.graph?.updateGraph(
+                data: self.bridge.processHeartRate() as! [Float],
+                forKey: "PPG"
+            )
         
-
+        }
         
         
         
