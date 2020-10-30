@@ -27,7 +27,7 @@ using namespace cv;
 NSMutableArray* R = [[NSMutableArray alloc] init];
 NSMutableArray* G = [[NSMutableArray alloc] init];
 NSMutableArray* B = [[NSMutableArray alloc] init];
-PeakFinder *pf = [[PeakFinder alloc] init];
+PeakFinder *pf = [[PeakFinder alloc] initWithFrequencyResolution:10.0];
 //CircularBuffer* circ = [CircularBuffer initWithNumChannels:100];
 
 #pragma mark ===Write Your Code Here===
@@ -51,7 +51,7 @@ PeakFinder *pf = [[PeakFinder alloc] init];
     printf("\n");
     for(int i = 0; i < [temp count]; i++)
     {
-        printf("%f",[temp[i] magnitude]);
+        printf("%f\n",[temp[i] magnitude]);
     }
     printf("\n");
 
