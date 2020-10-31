@@ -35,7 +35,7 @@ PeakFinder *pf = [[PeakFinder alloc] initWithFrequencyResolution:50.0];
 // alternatively you can subclass this class and override the process image function
 
 -(bool)checkR{
-    if([R count] == 120){
+    if([R count] == 200){
         return true;
     }
     else{
@@ -44,20 +44,27 @@ PeakFinder *pf = [[PeakFinder alloc] initWithFrequencyResolution:50.0];
 }
 
 -(float)processHeartRate{
-    float* xyz = new float[120];
-    for (int i = 0; i < 120; i++) {
+    float* xyz = new float[200];
+    float* xyz1 = new float[200];
+    float* xyz2 = new float[200];
+    for (int i = 0; i < 200; i++) {
         xyz[i] = [R[i] floatValue];
+//        xyz1[i] = [R[i+200] floatValue];
+//        xyz2[i] = [R[i+400] floatValue];
     }
-    NSArray* temp = [pf getFundamentalPeaksFromBuffer:xyz withLength:[R count] usingWindowSize:20 andPeakMagnitudeMinimum:100 aboveFrequency:0];
-    printf("\n");
-    for(int i = 0; i < [temp count]; i++)
-    {
-        printf("heart rate: %f\n",[temp[i] magnitude]);
-    }
-    printf("\n");
-
+    NSArray* temp = [pf getFundamentalPeaksFromBuffer:xyz withLength:[R count] usingWindowSize:13 andPeakMagnitudeMinimum:100 aboveFrequency:0];
+//    NSArray* temp1 = [pf getFundamentalPeaksFromBuffer:xyz1 withLength:[R count]/3 usingWindowSize:20 andPeakMagnitudeMinimum:100 aboveFrequency:0];
+//    NSArray* temp2 = [pf getFundamentalPeaksFromBuffer:xyz2 withLength:[R count]/3 usingWindowSize:20 andPeakMagnitudeMinimum:100 aboveFrequency:0];
+//    int average = int(60*([temp count] + [temp1 count] + [temp2 count])/20);
+//    printf("\n");
+//    for(int i = 0; i < [temp count]; i++)
+//    {
+//        printf("%f\n",[temp[i] magnitude]);
+//    }
+//    printf("\n");
+    int average = int(60*([temp count])/5);
     
-    return 60* ([temp count]/4.0);
+    return average;
     
 }
 
@@ -101,7 +108,7 @@ PeakFinder *pf = [[PeakFinder alloc] initWithFrequencyResolution:50.0];
     sprintf(text,"Avg. R: %.0f, G: %.0f, B: %.0f", avgPixelIntensity.val[0],avgPixelIntensity.val[1],avgPixelIntensity.val[2]);
     cv::putText(_image, text, cv::Point(0, 50), FONT_HERSHEY_PLAIN, 0.75, Scalar::all(255), 1, 2);
     if (contours.size() < 1) {
-        if([R count] < 121){
+        if([R count] < 201){
             // FOR #5 ON PART 3:
             // End time: 624312317.783336
             // Start time: 624312314.450343
