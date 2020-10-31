@@ -35,7 +35,7 @@ PeakFinder *pf = [[PeakFinder alloc] initWithFrequencyResolution:50.0];
 // alternatively you can subclass this class and override the process image function
 
 -(bool)checkR{
-    if([R count] == 100){
+    if([R count] == 120){
         return true;
     }
     else{
@@ -44,11 +44,11 @@ PeakFinder *pf = [[PeakFinder alloc] initWithFrequencyResolution:50.0];
 }
 
 -(float)processHeartRate{
-    float* xyz = new float[100];
-    for (int i = 0; i < 100; i++) {
+    float* xyz = new float[120];
+    for (int i = 0; i < 120; i++) {
         xyz[i] = [R[i] floatValue];
     }
-    NSArray* temp = [pf getFundamentalPeaksFromBuffer:xyz withLength:[R count] usingWindowSize:5 andPeakMagnitudeMinimum:100 aboveFrequency:0];
+    NSArray* temp = [pf getFundamentalPeaksFromBuffer:xyz withLength:[R count] usingWindowSize:20 andPeakMagnitudeMinimum:100 aboveFrequency:0];
     printf("\n");
     for(int i = 0; i < [temp count]; i++)
     {
@@ -57,7 +57,7 @@ PeakFinder *pf = [[PeakFinder alloc] initWithFrequencyResolution:50.0];
     printf("\n");
 
     
-    return (60*([temp count]/3.33));
+    return 60* ([temp count]/4.0);
     
 }
 
@@ -101,7 +101,7 @@ PeakFinder *pf = [[PeakFinder alloc] initWithFrequencyResolution:50.0];
     sprintf(text,"Avg. R: %.0f, G: %.0f, B: %.0f", avgPixelIntensity.val[0],avgPixelIntensity.val[1],avgPixelIntensity.val[2]);
     cv::putText(_image, text, cv::Point(0, 50), FONT_HERSHEY_PLAIN, 0.75, Scalar::all(255), 1, 2);
     if (contours.size() < 1) {
-        if([R count] < 101){
+        if([R count] < 121){
             // FOR #5 ON PART 3:
             // End time: 624312317.783336
             // Start time: 624312314.450343
