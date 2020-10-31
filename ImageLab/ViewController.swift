@@ -20,8 +20,6 @@ class ViewController: UIViewController   {
     let bridge = OpenCVBridge()
     
     //MARK: Outlets in view
-    @IBOutlet weak var flashSlider: UISlider!
-    @IBOutlet weak var stageLabel: UILabel!
     
     @IBOutlet weak var totalFacesLabel: UILabel!
     @IBOutlet weak var blinkDetectorLabel: UILabel!
@@ -130,18 +128,8 @@ class ViewController: UIViewController   {
                              withBounds: faceBounds, // the first face bounds
                              andContext: self.videoManager.getCIContext())
         
-        let finger = self.bridge.processFinger()
         DispatchQueue.main.async {
             self.totalFacesLabel.text = "Total faces: " + String(numFace)
-            if finger {
-                self.toggleFlash.isHidden = true
-                self.toggleCamera.isHidden = true
-                self.videoManager.turnOnFlashwithLevel(1.0)
-            }else{
-                self.toggleFlash.isHidden = false
-                self.toggleCamera.isHidden = false
-                self.videoManager.turnOffFlash()
-            }
             if smile {
                 self.smileDetctorLabel.text = "Yes, Sweet!"
             }else{
@@ -239,31 +227,6 @@ class ViewController: UIViewController   {
     }
     
     
-    
-    @IBAction func swipeRecognized(_ sender: UISwipeGestureRecognizer) {
-        switch sender.direction {
-        case UISwipeGestureRecognizer.Direction.left:
-            self.bridge.processType += 1
-        case UISwipeGestureRecognizer.Direction.right:
-            self.bridge.processType -= 1
-        default:
-            break
-            
-        }
-        
-        stageLabel.text = "Stage: \(self.bridge.processType)"
-
-    }
-    
-    //MARK: Convenience Methods for UI Flash and Camera Toggle
-    @IBAction func flash(_ sender: AnyObject) {
-        if(self.videoManager.toggleFlash()){
-            self.flashSlider.value = 1.0
-        }
-        else{
-            self.flashSlider.value = 0.0
-        }
-    }
     
     @IBAction func switchCamera(_ sender: AnyObject) {
         self.videoManager.toggleCameraPosition()

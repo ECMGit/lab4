@@ -28,7 +28,7 @@ NSMutableArray* R = [[NSMutableArray alloc] init];
 NSMutableArray* G = [[NSMutableArray alloc] init];
 NSMutableArray* B = [[NSMutableArray alloc] init];
 PeakFinder *pf = [[PeakFinder alloc] initWithFrequencyResolution:50.0];
-//CircularBuffer* circ = [CircularBuffer initWithNumChannels:100];
+CircularBuffer* inputBuffer = [[CircularBuffer alloc] initWithNumChannels:1 andBufferSize:200];
 
 
 #pragma mark ===Write Your Code Here===
@@ -52,6 +52,7 @@ PeakFinder *pf = [[PeakFinder alloc] initWithFrequencyResolution:50.0];
 //        xyz1[i] = [R[i+200] floatValue];
 //        xyz2[i] = [R[i+400] floatValue];
     }
+    [inputBuffer addNewFloatData:xyz withNumSamples:200];
     NSArray* temp = [pf getFundamentalPeaksFromBuffer:xyz withLength:[R count] usingWindowSize:13 andPeakMagnitudeMinimum:100 aboveFrequency:0];
 //    NSArray* temp1 = [pf getFundamentalPeaksFromBuffer:xyz1 withLength:[R count]/3 usingWindowSize:20 andPeakMagnitudeMinimum:100 aboveFrequency:0];
 //    NSArray* temp2 = [pf getFundamentalPeaksFromBuffer:xyz2 withLength:[R count]/3 usingWindowSize:20 andPeakMagnitudeMinimum:100 aboveFrequency:0];
@@ -70,12 +71,10 @@ PeakFinder *pf = [[PeakFinder alloc] initWithFrequencyResolution:50.0];
 
 -(NSMutableArray*)getR{
     NSMutableArray* redness = [[NSMutableArray alloc] init];
-    if(self.checkR){
         for (int i = 0; i < 200; i++) {
             [redness addObject:[NSNumber numberWithFloat:([R[i] floatValue]-255.000)*10]];
             NSLog(@"%@", redness[i]);
         }
-    }
     return redness;
 }
 
@@ -125,17 +124,17 @@ PeakFinder *pf = [[PeakFinder alloc] initWithFrequencyResolution:50.0];
             [R addObject:num];
             [G addObject:@(avgPixelIntensity.val[1])];
             [B addObject:@(avgPixelIntensity.val[2])];
+            if([R count] > 200){
+                [R removeObjectAtIndex:0];
+                sprintf(text,"200 Frames have been recorded.");
+                cv::putText(_image, text, cv::Point(10, 30), FONT_HERSHEY_PLAIN, 0.75, Scalar::all(255), 1, 2);
+                // if we captured sufficient data
+                sprintf(text,"True");
+                cv::putText(_image, text, cv::Point(10, 20), FONT_HERSHEY_PLAIN, 0.75, Scalar::all(255), 1, 2);
+                return true;
+            }
         }
-        else{
-            R = [[NSMutableArray alloc] init];
-            sprintf(text,"100 Frames have been recorded.");
-            cv::putText(_image, text, cv::Point(10, 30), FONT_HERSHEY_PLAIN, 0.75, Scalar::all(255), 1, 2);
         }
-        // if we captured sufficient data
-        sprintf(text,"True");
-        cv::putText(_image, text, cv::Point(10, 20), FONT_HERSHEY_PLAIN, 0.75, Scalar::all(255), 1, 2);
-        return true;
-    }
 //    sprintf(text," %.0lu",contours.size());
     sprintf(text,"False");
     cv::putText(_image, text, cv::Point(10, 20), FONT_HERSHEY_PLAIN, 0.75, Scalar::all(255), 1, 2);

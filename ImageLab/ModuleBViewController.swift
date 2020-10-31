@@ -45,9 +45,6 @@ class ModuleBViewController: UIViewController {
             videoManager.start()
         }
         
-
-//        self.view.addSubview(self.subView)
-        
         graph?.addGraph(withName: "PPG", shouldNormalize: true, numPointsInGraph: 100)
         Timer.scheduledTimer(timeInterval: 0.05, target: self,
             selector: #selector(self.updateGraph),
@@ -60,13 +57,7 @@ class ModuleBViewController: UIViewController {
     //MARK: Process image output
     func processImage(inputImage:CIImage) -> CIImage{
         
-        // detect faces
-        
-        // if no faces, just return original image
-        
         var retImage = inputImage
-        
-
         // or any bounds to only process a certain bounding region in OpenCV
         self.bridge.setTransforms(self.videoManager.transform)
         self.bridge.setImage(retImage,
@@ -81,24 +72,6 @@ class ModuleBViewController: UIViewController {
                 NSLog("%f",hr)
             }
         }
-        
-
-//        if finger != nil{
-//
-//
-//                if finger{
-//                    self.toggleFlash.isHidden = true
-//                    self.toggleCamera.isHidden = true
-//                    self.videoManager.turnOnFlashwithLevel(1.0)
-//                }
-//                else{
-//                    self.toggleFlash.isHidden = false
-//                    self.toggleCamera.isHidden = false
-//                    self.videoManager.turnOffFlash()
-//                }
-//
-//        }
-//        }
         retImage = self.bridge.getImageComposite() // get back opencv processed part of the image (overlayed on original)
         
         return retImage
@@ -106,20 +79,15 @@ class ModuleBViewController: UIViewController {
     // periodically, update the graph with refreshed FFT Data
     @objc
     func updateGraph(){
-//        if self.bridge.checkR(){
+        if self.bridge.checkR(){
             self.graph?.updateGraph(
                 data: self.bridge.getR() as! [Float],
                 forKey: "PPG"
             )
-        if(self.bridge.checkR()){
             DispatchQueue.main.async {
                 self.heartRate.text = "Detected Heart Rate:" + String(self.bridge.processHeartRate()) + " BPM"
             }
         }
-            
-        
-//        }
-        
         
         
     }
