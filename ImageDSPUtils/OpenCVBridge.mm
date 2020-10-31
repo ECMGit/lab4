@@ -45,8 +45,8 @@ PeakFinder *pf = [[PeakFinder alloc] initWithFrequencyResolution:50.0];
 
 -(float)processHeartRate{
     float* xyz = new float[200];
-    float* xyz1 = new float[200];
-    float* xyz2 = new float[200];
+    float* xyz1 = new float[1000];
+    float* xyz2 = new float[1000];
     for (int i = 0; i < 200; i++) {
         xyz[i] = [R[i] floatValue];
 //        xyz1[i] = [R[i+200] floatValue];
@@ -69,7 +69,14 @@ PeakFinder *pf = [[PeakFinder alloc] initWithFrequencyResolution:50.0];
 }
 
 -(NSMutableArray*)getR{
-    return R;
+    NSMutableArray* redness = [[NSMutableArray alloc] init];
+    if(self.checkR){
+        for (int i = 0; i < 200; i++) {
+            [redness addObject:[NSNumber numberWithFloat:([R[i] floatValue]-255.000)*10]];
+            NSLog(@"%@", redness[i]);
+        }
+    }
+    return redness;
 }
 
 -(bool)processFinger{

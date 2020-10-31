@@ -27,7 +27,7 @@ class ModuleBViewController: UIViewController {
     @IBOutlet var subView: UIView!
     
     lazy var graph:MetalGraph? = {
-        return MetalGraph(mainView: self.subView)
+        return MetalGraph(mainView: self.view)
         }()
     
     

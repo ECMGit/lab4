@@ -83,39 +83,33 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E9O-3s-71c">
-                                <rect key="frame" x="0.0" y="44" width="375" height="265"/>
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cXq-N2-nWi">
+                                <rect key="frame" x="0.0" y="618" width="375" height="49"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cXq-N2-nWi">
-                                <rect key="frame" x="0.0" y="317" width="375" height="350"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Detected Heart Rate:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jsw-ze-4jP">
-                                        <rect key="frame" x="65" y="165" width="302" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Detected Heart Rate:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jsw-ze-4jP">
+                                <rect key="frame" x="57" y="136" width="302" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E9O-3s-71c">
+                                <rect key="frame" x="0.0" y="516" width="375" height="94"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                                <constraints>
-                                    <constraint firstItem="Jsw-ze-4jP" firstAttribute="leading" secondItem="cXq-N2-nWi" secondAttribute="leading" constant="65" id="PKR-cN-PeV"/>
-                                    <constraint firstItem="Jsw-ze-4jP" firstAttribute="top" secondItem="cXq-N2-nWi" secondAttribute="top" constant="165" id="y2J-ph-eEl"/>
-                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="E9O-3s-71c" secondAttribute="bottom" constant="57" id="25M-Uv-IIc"/>
+                            <constraint firstItem="E9O-3s-71c" firstAttribute="leading" secondItem="csN-ER-5NB" secondAttribute="leadingMargin" constant="-16" id="5Iz-UK-CGD"/>
                             <constraint firstAttribute="leading" secondItem="csN-ER-5NB" secondAttribute="leading" id="A5q-qv-fHy"/>
-                            <constraint firstAttribute="bottom" secondItem="E9O-3s-71c" secondAttribute="bottom" constant="358" id="V9M-FL-k1R"/>
-                            <constraint firstItem="E9O-3s-71c" firstAttribute="top" secondItem="Y2Z-am-ImR" secondAttribute="bottom" id="Wyn-QZ-i13"/>
-                            <constraint firstItem="Z1X-Jr-DBK" firstAttribute="top" secondItem="cXq-N2-nWi" secondAttribute="bottom" id="XwG-Wz-hnT"/>
-                            <constraint firstItem="E9O-3s-71c" firstAttribute="leading" secondItem="csN-ER-5NB" secondAttribute="leading" id="aTO-wl-nz1"/>
-                            <constraint firstItem="cXq-N2-nWi" firstAttribute="leading" secondItem="csN-ER-5NB" secondAttribute="leading" id="knB-go-ZaF"/>
-                            <constraint firstAttribute="trailing" secondItem="cXq-N2-nWi" secondAttribute="trailing" id="mLV-zx-wv6"/>
-                            <constraint firstAttribute="trailing" secondItem="E9O-3s-71c" secondAttribute="trailing" id="n6S-k9-haS"/>
-                            <constraint firstItem="cXq-N2-nWi" firstAttribute="top" secondItem="E9O-3s-71c" secondAttribute="bottom" constant="8" id="pJH-yi-65N"/>
+                            <constraint firstItem="cXq-N2-nWi" firstAttribute="top" secondItem="E9O-3s-71c" secondAttribute="bottom" constant="8" id="AYF-B5-IOb"/>
+                            <constraint firstItem="E9O-3s-71c" firstAttribute="trailing" secondItem="cXq-N2-nWi" secondAttribute="trailing" id="NSn-FG-J1e"/>
+                            <constraint firstItem="E9O-3s-71c" firstAttribute="leading" secondItem="cXq-N2-nWi" secondAttribute="leading" id="cmj-cR-T8c"/>
+                            <constraint firstItem="E9O-3s-71c" firstAttribute="centerX" secondItem="csN-ER-5NB" secondAttribute="centerX" id="dJS-lV-Lsc"/>
                             <constraint firstAttribute="leading" secondItem="csN-ER-5NB" secondAttribute="leading" id="pxK-mj-Mx9"/>
+                            <constraint firstItem="E9O-3s-71c" firstAttribute="top" secondItem="csN-ER-5NB" secondAttribute="top" constant="516" id="vbU-G8-f93"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="ron-u3-mM4"/>

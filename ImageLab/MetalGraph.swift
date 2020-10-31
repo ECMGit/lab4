@@ -172,7 +172,7 @@ class MetalGraph {
             
             if vertexNormalize[forKey]! {
                 // normalize for fft values
-                addToPlot += 84.0/(64.0 * numGraphs)
+                addToPlot += 42.0/(64.0 * numGraphs)
                 multiplier = 1.0/(64.0 * numGraphs)
             }else{
                 // normalize for microphone values
