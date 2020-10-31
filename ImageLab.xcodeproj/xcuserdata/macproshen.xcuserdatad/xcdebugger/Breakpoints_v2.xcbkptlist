@@ -14,57 +14,10 @@
             filePath = "ImageLab/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "244"
-            endingLineNumber = "244"
-            landmarkName = "swipeRecognized(_:)"
+            startingLineNumber = "224"
+            endingLineNumber = "224"
+            landmarkName = "applyFiltersToFaces(inputImage:features:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "86661025-247A-4F4A-8448-F8FCF97141A7 - e90100d8adf4e796"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "ImageLab.ViewController.swipeRecognized(__C.UISwipeGestureRecognizer) -&gt; ()"
-                  moduleName = "ImageLab"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/macproshen/Desktop/2020FALL/CS7323/lab/lab4/lab4/ImageLab/ViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "244"
-                  endingLineNumber = "244"
-                  offsetFromSymbolStart = "140">
-               </Location>
-               <Location
-                  uuid = "86661025-247A-4F4A-8448-F8FCF97141A7 - e90100d8adf4e796"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "ImageLab.ViewController.swipeRecognized(__C.UISwipeGestureRecognizer) -&gt; ()"
-                  moduleName = "ImageLab"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/macproshen/Desktop/2020FALL/CS7323/lab/lab4/lab4/ImageLab/ViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "244"
-                  endingLineNumber = "244"
-                  offsetFromSymbolStart = "152">
-               </Location>
-               <Location
-                  uuid = "86661025-247A-4F4A-8448-F8FCF97141A7 - e90100d8adf4e796"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "ImageLab.ViewController.swipeRecognized(__C.UISwipeGestureRecognizer) -&gt; ()"
-                  moduleName = "ImageLab"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/macproshen/Desktop/2020FALL/CS7323/lab/lab4/lab4/ImageLab/ViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "244"
-                  endingLineNumber = "244"
-                  offsetFromSymbolStart = "372">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

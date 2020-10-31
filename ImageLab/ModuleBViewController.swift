@@ -18,6 +18,7 @@ class ModuleBViewController: UIViewController {
     let pinchFilterIndex = 2
     var detector:CIDetector! = nil
     let bridge = OpenCVBridge()
+    @IBOutlet weak var heartRate: UILabel!
     
 
 
@@ -29,27 +30,13 @@ class ModuleBViewController: UIViewController {
         return MetalGraph(mainView: self.subView)
         }()
     
-    //MARK: Outlets in view
-    @IBOutlet weak var flashSlider: UISlider!
-    @IBOutlet weak var stageLabel: UILabel!
-    
-    @IBOutlet weak var toggleFlash: UIButton!
-    @IBOutlet weak var toggleCamera: UIButton!
     
     //MARK: ViewController Hierarchy
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = nil
-        self.setupFilters()
-        
-        self.bridge.loadHaarCascade(withFilename: "nose")
-        self.videoManager = VideoAnalgesic(mainView: self.view)
+        self.videoManager = VideoAnalgesic(mainView: self.cameraView)
         self.videoManager.setCameraPosition(position: AVCaptureDevice.Position.back)
-        
-        // create dictionary for face detection
-        // HINT: you need to manipulate these proerties for better face detection efficiency
-     
         
 
         self.videoManager.setProcessingBlock(newProcessBlock: self.processImage)
@@ -59,7 +46,7 @@ class ModuleBViewController: UIViewController {
         }
         
 
-        self.view.addSubview(self.subView)
+//        self.view.addSubview(self.subView)
         
         graph?.addGraph(withName: "PPG", shouldNormalize: true, numPointsInGraph: 100)
         Timer.scheduledTimer(timeInterval: 0.05, target: self,
@@ -94,8 +81,10 @@ class ModuleBViewController: UIViewController {
                 NSLog("%f",hr)
             }
         }
+        
+
 //        if finger != nil{
-//        DispatchQueue.main.async {
+//
 //
 //                if finger{
 //                    self.toggleFlash.isHidden = true
@@ -114,73 +103,22 @@ class ModuleBViewController: UIViewController {
         
         return retImage
     }
-    
-    //MARK: Setup filtering
-    func setupFilters(){
-        filters = []
-        
-        let filterPinch = CIFilter(name:"CIBumpDistortion")!
-        filterPinch.setValue(-0.5, forKey: "inputScale")
-        filterPinch.setValue(75, forKey: "inputRadius")
-        filters.append(filterPinch)
-        
-    }
-    
-    //MARK: Apply filters and apply feature detectors
-    func applyFiltersToFaces(inputImage:CIImage,features:[CIFaceFeature])->CIImage{
-        var retImage = inputImage
-        var filterCenter = CGPoint()
-        
-        for f in features {
-            //set where to apply filter
-            filterCenter.x = f.bounds.midX
-            filterCenter.y = f.bounds.midY
-            
-            //do for each filter (assumes all filters have property, "inputCenter")
-            for filt in filters{
-                filt.setValue(retImage, forKey: kCIInputImageKey)
-                filt.setValue(CIVector(cgPoint: filterCenter), forKey: "inputCenter")
-                // could also manipualte the radius of the filter based on face size!
-                retImage = filt.outputImage!
-            }
-        }
-        return retImage
-    }
-    
-    
-    //MARK: Convenience Methods for UI Flash and Camera Toggle
-    @IBAction func flash(_ sender: AnyObject) {
-        if(self.videoManager.toggleFlash()){
-            self.flashSlider.value = 1.0
-        }
-        else{
-            self.flashSlider.value = 0.0
-        }
-    }
-    
-    @IBAction func switchCamera(_ sender: AnyObject) {
-        self.videoManager.toggleCameraPosition()
-    }
-    
-    @IBAction func setFlashLevel(_ sender: UISlider) {
-        if(sender.value>0.0){
-            self.videoManager.turnOnFlashwithLevel(sender.value)
-        }
-        else if(sender.value==0.0){
-            self.videoManager.turnOffFlash()
-        }
-    }
-
     // periodically, update the graph with refreshed FFT Data
     @objc
     func updateGraph(){
-        if self.bridge.checkR(){
+//        if self.bridge.checkR(){
             self.graph?.updateGraph(
                 data: self.bridge.getR() as! [Float],
                 forKey: "PPG"
             )
-        
+        if(self.bridge.checkR()){
+            DispatchQueue.main.async {
+                self.heartRate.text = "Detected Heart Rate:" + String(self.bridge.processHeartRate()) + " BPM"
+            }
         }
+            
+        
+//        }
         
         
         
