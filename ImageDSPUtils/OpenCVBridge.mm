@@ -52,7 +52,7 @@ PeakFinder *pf = [[PeakFinder alloc] initWithFrequencyResolution:50.0];
     printf("\n");
     for(int i = 0; i < [temp count]; i++)
     {
-        printf("%f\n",[temp[i] magnitude]);
+        printf("heart rate: %f\n",[temp[i] magnitude]);
     }
     printf("\n");
 
