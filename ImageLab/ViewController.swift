@@ -24,7 +24,6 @@ class ViewController: UIViewController   {
     @IBOutlet weak var totalFacesLabel: UILabel!
     @IBOutlet weak var blinkDetectorLabel: UILabel!
     @IBOutlet weak var smileDetctorLabel: UILabel!
-    @IBOutlet weak var toggleFlash: UIButton!
     @IBOutlet weak var toggleCamera: UIButton!
     
     //MARK: ViewController Hierarchy

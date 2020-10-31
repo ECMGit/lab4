@@ -29,7 +29,8 @@ NSMutableArray* G = [[NSMutableArray alloc] init];
 NSMutableArray* B = [[NSMutableArray alloc] init];
 PeakFinder *pf = [[PeakFinder alloc] initWithFrequencyResolution:50.0];
 CircularBuffer* inputBuffer = [[CircularBuffer alloc] initWithNumChannels:1 andBufferSize:200];
-
+int count = 1;
+float* xyz = new float[200];
 
 #pragma mark ===Write Your Code Here===
 // alternatively you can subclass this class and override the process image function
@@ -44,15 +45,14 @@ CircularBuffer* inputBuffer = [[CircularBuffer alloc] initWithNumChannels:1 andB
 }
 
 -(float)processHeartRate{
-    float* xyz = new float[200];
-    float* xyz1 = new float[1000];
-    float* xyz2 = new float[1000];
-    for (int i = 0; i < 200; i++) {
-        xyz[i] = [R[i] floatValue];
-//        xyz1[i] = [R[i+200] floatValue];
-//        xyz2[i] = [R[i+400] floatValue];
+    if(count == 199){
+        for (int i = 0; i < 200; i++) {
+            xyz[i] = [R[i] floatValue];
+    //        xyz1[i] = [R[i+200] floatValue];
+    //        xyz2[i] = [R[i+400] floatValue];
+            NSLog(@"%d", count);
+        }
     }
-    [inputBuffer addNewFloatData:xyz withNumSamples:200];
     NSArray* temp = [pf getFundamentalPeaksFromBuffer:xyz withLength:[R count] usingWindowSize:13 andPeakMagnitudeMinimum:100 aboveFrequency:0];
 //    NSArray* temp1 = [pf getFundamentalPeaksFromBuffer:xyz1 withLength:[R count]/3 usingWindowSize:20 andPeakMagnitudeMinimum:100 aboveFrequency:0];
 //    NSArray* temp2 = [pf getFundamentalPeaksFromBuffer:xyz2 withLength:[R count]/3 usingWindowSize:20 andPeakMagnitudeMinimum:100 aboveFrequency:0];
@@ -73,7 +73,7 @@ CircularBuffer* inputBuffer = [[CircularBuffer alloc] initWithNumChannels:1 andB
     NSMutableArray* redness = [[NSMutableArray alloc] init];
         for (int i = 0; i < 200; i++) {
             [redness addObject:[NSNumber numberWithFloat:([R[i] floatValue]-255.000)*10]];
-            NSLog(@"%@", redness[i]);
+//            NSLog(@"%@", redness[i]);
         }
     return redness;
 }
@@ -114,27 +114,29 @@ CircularBuffer* inputBuffer = [[CircularBuffer alloc] initWithNumChannels:1 andB
     sprintf(text,"Avg. R: %.0f, G: %.0f, B: %.0f", avgPixelIntensity.val[0],avgPixelIntensity.val[1],avgPixelIntensity.val[2]);
     cv::putText(_image, text, cv::Point(0, 50), FONT_HERSHEY_PLAIN, 0.75, Scalar::all(255), 1, 2);
     if (contours.size() < 1) {
-        if([R count] < 201){
             // FOR #5 ON PART 3:
             // End time: 624312317.783336
             // Start time: 624312314.450343
             // So roughly 3330 ms is captured in the 100 element array.
             //printf("%f",CFAbsoluteTimeGetCurrent());
-            NSNumber *num = [NSNumber numberWithFloat:avgPixelIntensity.val[0]];
-            [R addObject:num];
-            [G addObject:@(avgPixelIntensity.val[1])];
-            [B addObject:@(avgPixelIntensity.val[2])];
-            if([R count] > 200){
-                [R removeObjectAtIndex:0];
-                sprintf(text,"200 Frames have been recorded.");
-                cv::putText(_image, text, cv::Point(10, 30), FONT_HERSHEY_PLAIN, 0.75, Scalar::all(255), 1, 2);
-                // if we captured sufficient data
-                sprintf(text,"True");
-                cv::putText(_image, text, cv::Point(10, 20), FONT_HERSHEY_PLAIN, 0.75, Scalar::all(255), 1, 2);
-                return true;
-            }
+        count++;
+        if(count == 200){
+            count = 1;
         }
+        NSNumber *num = [NSNumber numberWithFloat:avgPixelIntensity.val[0]];
+        [R addObject:num];
+        [G addObject:@(avgPixelIntensity.val[1])];
+        [B addObject:@(avgPixelIntensity.val[2])];
+        if([R count] > 200){
+            [R removeObjectAtIndex:0];
+            sprintf(text,"200 Frames have been recorded.");
+            cv::putText(_image, text, cv::Point(10, 30), FONT_HERSHEY_PLAIN, 0.75, Scalar::all(255), 1, 2);
+            // if we captured sufficient data
+            sprintf(text,"True");
+            cv::putText(_image, text, cv::Point(10, 20), FONT_HERSHEY_PLAIN, 0.75, Scalar::all(255), 1, 2);
+            return true;
         }
+    }
 //    sprintf(text," %.0lu",contours.size());
     sprintf(text,"False");
     cv::putText(_image, text, cv::Point(10, 20), FONT_HERSHEY_PLAIN, 0.75, Scalar::all(255), 1, 2);

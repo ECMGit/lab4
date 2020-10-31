@@ -150,13 +150,6 @@
                                     <action selector="switchCamera:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8o5-A8-Yvy"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fsl-XI-9ND">
-                                <rect key="frame" x="16" y="579" width="87" height="30"/>
-                                <state key="normal" title="Toggle Flash"/>
-                                <connections>
-                                    <action selector="flash:" destination="BYZ-38-t0r" eventType="touchUpInside" id="p39-Fo-nAF"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Say Cheese" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d6m-BY-6fm">
                                 <rect key="frame" x="16" y="509" width="90" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -179,17 +172,14 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="fsl-XI-9ND" firstAttribute="baseline" secondItem="HqB-mz-Xht" secondAttribute="baseline" id="9LW-dS-HXP"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="HqB-mz-Xht" secondAttribute="bottom" constant="58" id="7Fn-aS-QVY"/>
                             <constraint firstItem="0D8-FW-N45" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="QpS-7B-nni"/>
-                            <constraint firstItem="0D8-FW-N45" firstAttribute="leading" secondItem="fsl-XI-9ND" secondAttribute="leading" id="ULZ-bG-RAo"/>
                             <constraint firstItem="d6m-BY-6fm" firstAttribute="top" secondItem="nRG-bI-CRc" secondAttribute="bottom" constant="8" symbolic="YES" id="Xlc-n1-iZb"/>
                             <constraint firstItem="0D8-FW-N45" firstAttribute="top" secondItem="d6m-BY-6fm" secondAttribute="bottom" constant="20" id="ctZ-UI-yjw"/>
                             <constraint firstItem="HqB-mz-Xht" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" symbolic="YES" id="dG4-O1-6UF"/>
                             <constraint firstItem="0D8-FW-N45" firstAttribute="leading" secondItem="d6m-BY-6fm" secondAttribute="leading" id="f1d-Of-TwQ"/>
                             <constraint firstItem="HqB-mz-Xht" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="lwY-JI-Jzd"/>
-                            <constraint firstItem="fsl-XI-9ND" firstAttribute="top" secondItem="0D8-FW-N45" secondAttribute="bottom" constant="8" symbolic="YES" id="sU6-5f-B8D"/>
                             <constraint firstItem="nRG-bI-CRc" firstAttribute="leading" secondItem="d6m-BY-6fm" secondAttribute="leading" id="tEI-Cv-XVz"/>
-                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="fsl-XI-9ND" secondAttribute="trailing" constant="20" symbolic="YES" id="tu9-Sb-MW5"/>
                             <constraint firstAttribute="bottom" secondItem="0D8-FW-N45" secondAttribute="bottom" constant="96" id="zBV-yk-rYq"/>
                         </constraints>
                         <connections>
@@ -202,7 +192,6 @@
                         <outlet property="blinkDetectorLabel" destination="nRG-bI-CRc" id="nQp-Dx-tXu"/>
                         <outlet property="smileDetctorLabel" destination="d6m-BY-6fm" id="xEw-BD-sf0"/>
                         <outlet property="toggleCamera" destination="HqB-mz-Xht" id="VKW-vW-hqk"/>
-                        <outlet property="toggleFlash" destination="fsl-XI-9ND" id="zw3-9a-CX4"/>
                         <outlet property="totalFacesLabel" destination="0D8-FW-N45" id="7jb-rm-WlC"/>
                     </connections>
                 </viewController>
